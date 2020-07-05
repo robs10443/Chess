@@ -15,21 +15,33 @@ def moveOnBoard(start_row,start_col,end_row,end_col):
     global pawn_with_enpassant
 
     row_of_pawn_with_enpassant,col_of_pawn_with_enpassant = pawn_with_enpassant
-    print(row_of_pawn_with_enpassant,col_of_pawn_with_enpassant)
     pawn_with_enpassant = (-1,-1)
     if row_of_pawn_with_enpassant != -1:
         brd.board[row_of_pawn_with_enpassant][col_of_pawn_with_enpassant].setEnpassant(False)
     
-    notation = brd.getPiece(start_row,end_col)
-    print (start_row,start_col)
+    notation = brd.getPiece(start_row,start_col)
     if(notation[1] == "P"):
         if(brd.board[start_row][start_col].getMoveTime() == 0):
             brd.board[start_row][start_col].setMoveTime(1)
             if ((start_row - end_row) == 2 or (start_row - end_row) == -2):
                 brd.board[start_row][start_col].setEnpassant(True)
                 pawn_with_enpassant = (end_row,end_col)
-    
-    
+        
+        if (end_col == (start_col - 1)):
+            if(brd.isNone(end_row,end_col) == True):
+                brd.board[start_row][end_col] = None
+        if (end_col == (start_col + 1)):
+            if(brd.isNone(end_row,end_col) == True):
+                brd.board[start_row][end_col] = None
+
+        #pormotion
+        if (end_row == 0):
+            pass
+        
+        #promotion
+        if (end_col == 7):
+            pass
+
     movePiece(start_row,start_col,end_row,end_col)
     return True
     
