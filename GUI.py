@@ -1,6 +1,7 @@
 import pygame
 import game_config as gc
 import Board
+import Game as gm
 from pygame import display, event, image, Surface, draw, transform
 
 pygame.init()
@@ -12,8 +13,6 @@ screen = display.set_mode((gc.SCREEN_SIZE_X,gc.SCREEN_SIZE_Y))
 screen.fill(gc.WHITE)
 
 temp_board = Board.board
-
-Board.init("White")
 
 def displayChessBoard():
     for row in range(gc.BOX_COUNT_PER_SIDE):
@@ -29,10 +28,6 @@ def displayChessBoard():
             starting_y_of_box = col*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_TOP
             
             draw.rect(screen,color[col%2],(starting_x_of_box,starting_y_of_box,gc.BOX_SIDE_LENGTH,gc.BOX_SIDE_LENGTH))
-
-
-displayChessBoard()
-
 
 def displayCurrentStatusBoard(temp_board):
     for row in range(gc.BOX_COUNT_PER_SIDE):
@@ -59,29 +54,43 @@ def displayMoves(moves):
         starting_y_of_box = x*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_TOP + margin
         screen.blit(dot_image,(starting_x_of_box,starting_y_of_box))
 
-running = True
+def displayScreen():
+    running = True
 
-moves = []
+    moves = []
 
-while running:
-    current_event = event.get()
+    selected = False
 
-    displayChessBoard()
+    selected_piece_x = -1
+    selected_piece_y = -1
 
-    displayCurrentStatusBoard(temp_board)
-    
-    for e in current_event:
-        if e.type == pygame.QUIT:
-            running = False
+    while running:
+        current_event = event.get()
 
-        if e.type == pygame.MOUSEBUTTONDOWN:
-            mouse_x,mouse_y = pygame.mouse.get_pos()
-            row = (mouse_y - gc.SCREEN_MARGIN_TOP) // gc.BOX_SIDE_LENGTH
-            col = (mouse_x - gc.SCREEN_MARGIN_SIDE) // gc.BOX_SIDE_LENGTH
-            moves = Board.getMoves(row,col)
-            
-    displayMoves(moves)
+        displayChessBoard()
 
-    display.flip()
+        displayCurrentStatusBoard(temp_board)
+        
+        for e in current_event:
+            if e.type == pygame.QUIT:
+                running = False
 
-pygame.time.wait(1)
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x,mouse_y = pygame.mouse.get_pos()
+                row = (mouse_y - gc.SCREEN_MARGIN_TOP) // gc.BOX_SIDE_LENGTH
+                col = (mouse_x - gc.SCREEN_MARGIN_SIDE) // gc.BOX_SIDE_LENGTH
+                if selected == False:
+                    if Board.isPiece(row,col):
+                        # selected = True
+                        selected_piece_x = row
+                        selected_piece_y = col
+                        moves = Board.getMoves(row,col)
+                # else:
+                #     # gm.moveOnBoard(selected_piece_x,selected_piece_y,row,col)
+                #     selected = False
+                #     moves = []
+
+        displayMoves(moves)
+
+        display.flip()
+        pygame.time.wait(1)

@@ -23,55 +23,76 @@ class King:
     def setShortCastle(self,flag):
         self.short_castle = flag
 
-    def isLongCastle(self,flag):
+    def isLongCastle(self):
         return self.long_castle
     
-    def isShortCastle(self,flag):
+    def isShortCastle(self):
         return self.short_castle
 
-    def moves(self,x,y):
+    def moves(self,row,col):
         attacking_list = Board.isAttacked(self.getColor())
+        diffent_king_x, diffent_king_y = Board.findPiece(gc.GAME_COLOR,"King")
+
+        for t1 in [1,0,-1]:
+            for t2 in [1,0,-1]:
+                if((diffent_king_x + t1,diffent_king_y + t2) not in attacking_list):
+                    attacking_list.append((diffent_king_x + t1,diffent_king_y + t2))
+
         list_of_moves = []
         tx = 1
         ty = 0
-        # if Board.isInboard(x + tx,y + ty) == True and (x + tx,y + ty) not in attacking_list and Board.isSameColor(x,y,x + tx,y + ty) == False :
-        #     list_of_moves.append((x + tx,y + ty))
+        # print (row + tx,col + ty)
+        if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
+            list_of_moves.append((row + tx,col + ty))
         
-        # tx = 1
-        # ty = -1
-        # if Board.isInboard(x + tx,y + ty) == True and (x + tx,y + ty) not in attacking_list and Board.isSameColor(x,y,x + tx,y + ty) == False :
-        #     list_of_moves.append((x + tx,y + ty))
+        tx = 1
+        ty = -1
+        # print (row + tx,col + ty)
+        if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list and Board.isSameColor(row,col,row + tx,col + ty) == False :
+            list_of_moves.append((row + tx,col + ty))
         
-        # tx = 1
-        # ty = 1
-        # if Board.isInboard(x + tx,y + ty) == True and (x + tx,y + ty) not in attacking_list and Board.isSameColor(x,y,x + tx,y + ty) == False :
-        #     list_of_moves.append((x + tx,y + ty))
+        tx = 1
+        ty = 1
+        # print (row + tx,col + ty)
+        if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list and Board.isSameColor(row,col,row + tx,col + ty) == False :
+            list_of_moves.append((row + tx,col + ty))
         
-        # tx = -1
-        # ty = 0
-        # if Board.isInboard(x + tx,y + ty) == True and (x + tx,y + ty) not in attacking_list and Board.isSameColor(x,y,x + tx,y + ty) == False :
-        #     list_of_moves.append((x + tx,y + ty))
+        tx = -1
+        ty = 0
+        # print (row + tx,col + ty)
+        if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
+            list_of_moves.append((row + tx,col + ty))
         
-        # tx = -1
-        # ty = 1
-        # if Board.isInboard(x + tx,y + ty) == True and (x + tx,y + ty) not in attacking_list and Board.isSameColor(x,y,x + tx,y + ty) == False :
-        #     list_of_moves.append((x + tx,y + ty))
+        tx = -1
+        ty = 1
+        # print (row + tx,col + ty)
+        if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
+            list_of_moves.append((row + tx,col + ty))
         
-        # tx = -1
-        # ty = -1
-        # if Board.isInboard(x + tx,y + ty) == True and (x + tx,y + ty) not in attacking_list and Board.isSameColor(x,y,x + tx,y + ty) == False :
-        #     list_of_moves.append((x + tx,y + ty))
+        tx = -1
+        ty = -1
+        # print (row + tx,col + ty)
+        if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
+            list_of_moves.append((row + tx,col + ty))
         
-        # tx = 0
-        # ty = 1
-        # if Board.isInboard(x + tx,y + ty) == True and (x + tx,y + ty) not in attacking_list and Board.isSameColor(x,y,x + tx,y + ty) == False :
-        #     list_of_moves.append((x + tx,y + ty))
+        tx = 0
+        ty = 1
+        # print (row + tx,col + ty)
+        if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
+            list_of_moves.append((row + tx,col + ty))
         
-        # tx = 0
-        # ty = -1
-        # if Board.isInboard(x + tx,y + ty) == True and (x + tx,y + ty) not in attacking_list and Board.isSameColor(x,y,x + tx,y + ty) == False :
-        #     list_of_moves.append((x + tx,y + ty))
+        tx = 0
+        ty = -1
+        # print (row + tx,col + ty)
+        if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
+            list_of_moves.append((row + tx,col + ty))
         
+        if self.isShortCastle():
+            list_of_moves.append((row, col + 2))
+
+        if self.isLongCastle():
+            list_of_moves.append((row,col - 2))
+
         return list_of_moves
 
 class Queen:
@@ -87,17 +108,17 @@ class Queen:
     def getNotation(self):
         return self.notation
 
-    def moves(self,x,y):
+    def moves(self,row,col):
         list_of_moves = []
         tx = 1
         ty = 1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y + ty*i) == False:
+            if Board.isInboard(row + tx*i,col + ty*i) == False:
                 break
-            if Board.isNone(x + tx*i,y + ty*i):
-                list_of_moves.append((x + tx*i,y + ty*i))
-            elif Board.isSameColor(x,y,x + tx*i,y + ty*i) == False:
-                list_of_moves.append((x + tx*i,y + ty*i))
+            if Board.isNone(row + tx*i,col + ty*i):
+                list_of_moves.append((row + tx*i,col + ty*i))
+            elif Board.isSameColor(row,col,row + tx*i,col + ty*i) == False:
+                list_of_moves.append((row + tx*i,col + ty*i))
                 break
             else:
                 break
@@ -105,12 +126,12 @@ class Queen:
         tx = 1
         ty = -1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y + ty*i) == False:
+            if Board.isInboard(row + tx*i,col + ty*i) == False:
                 break
-            if Board.isNone(x + tx*i,y + ty*i):
-                list_of_moves.append((x + tx*i,y + ty*i))
-            elif Board.isSameColor(x,y,x + tx*i,y + ty*i) == False:
-                list_of_moves.append((x + tx*i,y + ty*i))
+            if Board.isNone(row + tx*i,col + ty*i):
+                list_of_moves.append((row + tx*i,col + ty*i))
+            elif Board.isSameColor(row,col,row + tx*i,col + ty*i) == False:
+                list_of_moves.append((row + tx*i,col + ty*i))
                 break
             else:
                 break
@@ -119,12 +140,12 @@ class Queen:
         tx = -1
         ty = 1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y + ty*i) == False:
+            if Board.isInboard(row + tx*i,col + ty*i) == False:
                 break
-            if Board.isNone(x + tx*i,y + ty*i):
-                list_of_moves.append((x + tx*i,y + ty*i))
-            elif Board.isSameColor(x,y,x + tx*i,y + ty*i) == False:
-                list_of_moves.append((x + tx*i,y + ty*i))
+            if Board.isNone(row + tx*i,col + ty*i):
+                list_of_moves.append((row + tx*i,col + ty*i))
+            elif Board.isSameColor(row,col,row + tx*i,col + ty*i) == False:
+                list_of_moves.append((row + tx*i,col + ty*i))
                 break
             else:
                 break
@@ -132,12 +153,12 @@ class Queen:
         tx = -1
         ty = -1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y + ty*i) == False:
+            if Board.isInboard(row + tx*i,col + ty*i) == False:
                 break
-            if Board.isNone(x + tx*i,y + ty*i):
-                list_of_moves.append((x + tx*i,y + ty*i))
-            elif Board.isSameColor(x,y,x + tx*i,y + ty*i) == False:
-                list_of_moves.append((x + tx*i,y + ty*i))
+            if Board.isNone(row + tx*i,col + ty*i):
+                list_of_moves.append((row + tx*i,col + ty*i))
+            elif Board.isSameColor(row,col,row + tx*i,col + ty*i) == False:
+                list_of_moves.append((row + tx*i,col + ty*i))
                 break
             else:
                 break
@@ -145,12 +166,12 @@ class Queen:
         tx = 1
         ty = 1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y) == False:
+            if Board.isInboard(row + tx*i,col) == False:
                 break
-            if Board.isNone(x + tx*i,y) == True:
-                list_of_moves.append((x + tx*i,y))
-            elif Board.isSameColor(x,y,x + tx*i,y) == False:
-                list_of_moves.append((x + tx*i,y))
+            if Board.isNone(row + tx*i,col) == True:
+                list_of_moves.append((row + tx*i,col))
+            elif Board.isSameColor(row,col,row + tx*i,col) == False:
+                list_of_moves.append((row + tx*i,col))
                 break
             else:
                 break
@@ -158,12 +179,12 @@ class Queen:
         tx = 1
         ty = -1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x,y + ty*i) == False:
+            if Board.isInboard(row,col + ty*i) == False:
                 break
-            if Board.isNone(x,y + ty*i):
-                list_of_moves.append((x,y + ty*i))
-            elif Board.isSameColor(x,y,x,y + ty*i) == False:
-                list_of_moves.append((x,y + ty*i))
+            if Board.isNone(row,col + ty*i):
+                list_of_moves.append((row,col + ty*i))
+            elif Board.isSameColor(row,col,row,col + ty*i) == False:
+                list_of_moves.append((row,col + ty*i))
                 break
             else:
                 break
@@ -172,12 +193,12 @@ class Queen:
         tx = -1
         ty = 1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y) == False:
+            if Board.isInboard(row + tx*i,col) == False:
                 break
-            if Board.isNone(x + tx*i,y):
-                list_of_moves.append((x + tx*i,y))
-            elif Board.isSameColor(x,y,x + tx*i,y) == False:
-                list_of_moves.append((x + tx*i,y))
+            if Board.isNone(row + tx*i,col):
+                list_of_moves.append((row + tx*i,col))
+            elif Board.isSameColor(row,col,row + tx*i,col) == False:
+                list_of_moves.append((row + tx*i,col))
                 break
             else:
                 break
@@ -185,12 +206,12 @@ class Queen:
         tx = -1
         ty = 1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x,y + ty*i) == False:
+            if Board.isInboard(row,col + ty*i) == False:
                 break
-            if Board.isNone(x,y + ty*i):
-                list_of_moves.append((x,y + ty*i))
-            elif Board.isSameColor(x,y,x,y + ty*i) == False:
-                list_of_moves.append((x,y + ty*i))
+            if Board.isNone(row,col + ty*i):
+                list_of_moves.append((row,col + ty*i))
+            elif Board.isSameColor(row,col,row,col + ty*i) == False:
+                list_of_moves.append((row,col + ty*i))
                 break
             else:
                 break
@@ -219,17 +240,17 @@ class Rook:
     def IsMoved(self):
         return self.is_moved
 
-    def moves(self,x,y):
+    def moves(self,row,col):
         list_of_moves = []
         tx = 1
         ty = 1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y) == False:
+            if Board.isInboard(row + tx*i,col) == False:
                 break
-            if Board.isNone(x + tx*i,y) == True:
-                list_of_moves.append((x + tx*i,y))
-            elif Board.isSameColor(x,y,x + tx*i,y) == False:
-                list_of_moves.append((x + tx*i,y))
+            if Board.isNone(row + tx*i,col) == True:
+                list_of_moves.append((row + tx*i,col))
+            elif Board.isSameColor(row,col,row + tx*i,col) == False:
+                list_of_moves.append((row + tx*i,col))
                 break
             else:
                 break
@@ -237,12 +258,12 @@ class Rook:
         tx = 1
         ty = -1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x,y + ty*i) == False:
+            if Board.isInboard(row,col + ty*i) == False:
                 break
-            if Board.isNone(x,y + ty*i):
-                list_of_moves.append((x,y + ty*i))
-            elif Board.isSameColor(x,y,x,y + ty*i) == False:
-                list_of_moves.append((x,y + ty*i))
+            if Board.isNone(row,col + ty*i):
+                list_of_moves.append((row,col + ty*i))
+            elif Board.isSameColor(row,col,row,col + ty*i) == False:
+                list_of_moves.append((row,col + ty*i))
                 break
             else:
                 break
@@ -251,12 +272,12 @@ class Rook:
         tx = -1
         ty = 1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y) == False:
+            if Board.isInboard(row + tx*i,col) == False:
                 break
-            if Board.isNone(x + tx*i,y):
-                list_of_moves.append((x + tx*i,y))
-            elif Board.isSameColor(x,y,x + tx*i,y) == False:
-                list_of_moves.append((x + tx*i,y))
+            if Board.isNone(row + tx*i,col):
+                list_of_moves.append((row + tx*i,col))
+            elif Board.isSameColor(row,col,row + tx*i,col) == False:
+                list_of_moves.append((row + tx*i,col))
                 break
             else:
                 break
@@ -264,12 +285,12 @@ class Rook:
         tx = -1
         ty = 1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x,y + ty*i) == False:
+            if Board.isInboard(row,col + ty*i) == False:
                 break
-            if Board.isNone(x,y + ty*i):
-                list_of_moves.append((x,y + ty*i))
-            elif Board.isSameColor(x,y,x,y + ty*i) == False:
-                list_of_moves.append((x,y + ty*i))
+            if Board.isNone(row,col + ty*i):
+                list_of_moves.append((row,col + ty*i))
+            elif Board.isSameColor(row,col,row,col + ty*i) == False:
+                list_of_moves.append((row,col + ty*i))
                 break
             else:
                 break
@@ -289,17 +310,17 @@ class Bishop:
         else:
             return "White"
 
-    def moves(self,x,y):
+    def moves(self,row,col):
         list_of_moves = []
         tx = 1
         ty = 1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y + ty*i) == False:
+            if Board.isInboard(row + tx*i,col + ty*i) == False:
                 break
-            if Board.isNone(x + tx*i,y + ty*i):
-                list_of_moves.append((x + tx*i,y + ty*i))
-            elif Board.isSameColor(x,y,x + tx*i,y + ty*i) == False:
-                list_of_moves.append((x + tx*i,y + ty*i))
+            if Board.isNone(row + tx*i,col + ty*i):
+                list_of_moves.append((row + tx*i,col + ty*i))
+            elif Board.isSameColor(row,col,row + tx*i,col + ty*i) == False:
+                list_of_moves.append((row + tx*i,col + ty*i))
                 break
             else:
                 break
@@ -307,12 +328,12 @@ class Bishop:
         tx = 1
         ty = -1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y + ty*i) == False:
+            if Board.isInboard(row + tx*i,col + ty*i) == False:
                 break
-            if Board.isNone(x + tx*i,y + ty*i):
-                list_of_moves.append((x + tx*i,y + ty*i))
-            elif Board.isSameColor(x,y,x + tx*i,y + ty*i) == False:
-                list_of_moves.append((x + tx*i,y + ty*i))
+            if Board.isNone(row + tx*i,col + ty*i):
+                list_of_moves.append((row + tx*i,col + ty*i))
+            elif Board.isSameColor(row,col,row + tx*i,col + ty*i) == False:
+                list_of_moves.append((row + tx*i,col + ty*i))
                 break
             else:
                 break
@@ -321,12 +342,12 @@ class Bishop:
         tx = -1
         ty = 1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y + ty*i) == False:
+            if Board.isInboard(row + tx*i,col + ty*i) == False:
                 break
-            if Board.isNone(x + tx*i,y + ty*i):
-                list_of_moves.append((x + tx*i,y + ty*i))
-            elif Board.isSameColor(x,y,x + tx*i,y + ty*i) == False:
-                list_of_moves.append((x + tx*i,y + ty*i))
+            if Board.isNone(row + tx*i,col + ty*i):
+                list_of_moves.append((row + tx*i,col + ty*i))
+            elif Board.isSameColor(row,col,row + tx*i,col + ty*i) == False:
+                list_of_moves.append((row + tx*i,col + ty*i))
                 break
             else:
                 break
@@ -334,12 +355,12 @@ class Bishop:
         tx = -1
         ty = -1
         for i in range(1,gc.BOX_COUNT_PER_SIDE):
-            if Board.isInboard(x + tx*i,y + ty*i) == False:
+            if Board.isInboard(row + tx*i,col + ty*i) == False:
                 break
-            if Board.isNone(x + tx*i,y + ty*i):
-                list_of_moves.append((x + tx*i,y + ty*i))
-            elif Board.isSameColor(x,y,x + tx*i,y + ty*i) == False:
-                list_of_moves.append((x + tx*i,y + ty*i))
+            if Board.isNone(row + tx*i,col + ty*i):
+                list_of_moves.append((row + tx*i,col + ty*i))
+            elif Board.isSameColor(row,col,row + tx*i,col + ty*i) == False:
+                list_of_moves.append((row + tx*i,col + ty*i))
                 break
             else:
                 break
@@ -361,32 +382,32 @@ class Knight:
         else:
             return "White"
 
-    def moves(self,x,y):
+    def moves(self,row,col):
         list_of_moves = []
 
-        if Board.isInboard(x + 1,y + 2) == True and Board.isSameColor(x,y,x + 1,y + 2) == False:
-            list_of_moves.append((x + 1,y + 2))
+        if Board.isInboard(row + 1,col + 2) == True and Board.isSameColor(row,col,row + 1,col + 2) == False:
+            list_of_moves.append((row + 1,col + 2))
         
-        if Board.isInboard(x + 1,y - 2) == True and Board.isSameColor(x,y,x + 1,y - 2) == False:
-            list_of_moves.append((x + 1,y - 2))
+        if Board.isInboard(row + 1,col - 2) == True and Board.isSameColor(row,col,row + 1,col - 2) == False:
+            list_of_moves.append((row + 1,col - 2))
         
-        if Board.isInboard(x - 1,y + 2) == True and Board.isSameColor(x,y,x - 1,y + 2) == False:
-            list_of_moves.append((x - 1,y + 2))
+        if Board.isInboard(row - 1,col + 2) == True and Board.isSameColor(row,col,row - 1,col + 2) == False:
+            list_of_moves.append((row - 1,col + 2))
         
-        if Board.isInboard(x - 1,y - 2) == True and Board.isSameColor(x,y,x - 1,y - 2) == False:
-            list_of_moves.append((x - 1,y - 2))
+        if Board.isInboard(row - 1,col - 2) == True and Board.isSameColor(row,col,row - 1,col - 2) == False:
+            list_of_moves.append((row - 1,col - 2))
         
-        if Board.isInboard(x + 2,y + 1) == True and Board.isSameColor(x,y,x + 2,y + 1) == False:
-            list_of_moves.append((x + 2,y + 1))
+        if Board.isInboard(row + 2,col + 1) == True and Board.isSameColor(row,col,row + 2,col + 1) == False:
+            list_of_moves.append((row + 2,col + 1))
         
-        if Board.isInboard(x + 2,y - 1) == True and Board.isSameColor(x,y,x + 2,y - 1) == False:
-            list_of_moves.append((x + 2,y - 1))
+        if Board.isInboard(row + 2,col - 1) == True and Board.isSameColor(row,col,row + 2,col - 1) == False:
+            list_of_moves.append((row + 2,col - 1))
         
-        if Board.isInboard(x - 2,y + 1) == True and Board.isSameColor(x,y,x - 2,y + 1) == False:
-            list_of_moves.append((x - 2,y + 1))
+        if Board.isInboard(row - 2,col + 1) == True and Board.isSameColor(row,col,row - 2,col + 1) == False:
+            list_of_moves.append((row - 2,col + 1))
         
-        if Board.isInboard(x - 2,y - 1) == True and Board.isSameColor(x,y,x - 2,y - 1) == False:
-            list_of_moves.append((x - 2,y - 1))
+        if Board.isInboard(row - 2,col - 1) == True and Board.isSameColor(row,col,row - 2,col - 1) == False:
+            list_of_moves.append((row - 2,col - 1))
         
         return list_of_moves
 
@@ -410,20 +431,30 @@ class Pawn:
     def setFirstMove(self,flag):
         self.first_move = flag
 
-    def moves(self,x,y):
+    def attackingMoves(self,row,col):
         list_of_moves = []
-        if ((x - 1) >= 0):
-            if Board.isPiece(x - 1,y) == False:
-                list_of_moves.append((x - 1,y))
-                if((x - 2) >= 0):
-                    if Board.isPiece(x - 2,y) == False:
-                        list_of_moves.append((x - 2,y))
+        if Board.isInboard(row + 1,col - 1) == True:
+            list_of_moves.append((row + 1,col - 1))
+        if Board.isInboard(row + 1,col + 1) == True:
+            list_of_moves.append((row + 1,col + 1))
+        
+        return list_of_moves
+        
+
+    def moves(self,row,col):
+        list_of_moves = []
+        if ((row - 1) >= 0):
+            if Board.isPiece(row - 1,col) == False:
+                list_of_moves.append((row - 1,col))
+                if((row - 2) >= 0):
+                    if Board.isPiece(row - 2,col) == False:
+                        list_of_moves.append((row - 2,col))
             
-            if (y + 1) < gc.BOX_COUNT_PER_SIDE:
-                if Board.isPiece(x - 1,y + 1) == True and Board.isSameColor(x,y,x - 1,y + 1) == False:
-                    list_of_moves.append((x - 1,y + 1))
+            if (col + 1) < gc.BOX_COUNT_PER_SIDE:
+                if Board.isPiece(row - 1,col + 1) == True and Board.isSameColor(row,col,row - 1,col + 1) == False:
+                    list_of_moves.append((row - 1,col + 1))
             
-            if((y - 1) >= 0) and Board.isSameColor(x,y,x - 1,y - 1) == False:
-                if Board.isPiece(x - 1, y - 1) == True:
-                    list_of_moves.append((x - 1,y - 1))
+            if((col - 1) >= 0) and Board.isSameColor(row,col,row - 1,col - 1) == False:
+                if Board.isPiece(row - 1, col - 1) == True:
+                    list_of_moves.append((row - 1,col - 1))
         return list_of_moves

@@ -12,6 +12,7 @@ BLACK = (0,0,0)
 GREEN = (19, 242, 22)
 DRAK_BROWN = (168, 88, 8)
 LIGHT_BROWN = (237, 178, 119)
+GAME_COLOR = ""
 
 piece_file_name = {
     "BB" : "Black_Bishop.png",
