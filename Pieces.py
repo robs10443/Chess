@@ -414,7 +414,8 @@ class Knight:
 class Pawn:
     def __init__(self,color):
         self.notation = color[0].upper() + "P"
-        self.first_move = False
+        self.first_move = 0
+        self.enPassant = False
 
     def getNotation(self):
         return self.notation
@@ -425,10 +426,16 @@ class Pawn:
         else:
             return "White"
 
-    def isFirstMove(self):
+    def setEnpassant(self,flag):
+        self.enPassant = flag
+
+    def getEnpassant(self):
+        return self.enPassant
+
+    def getMoveTime(self):
         return self.first_move
 
-    def setFirstMove(self,flag):
+    def setMoveTime(self,flag):
         self.first_move = flag
 
     def attackingMoves(self,row,col):
@@ -443,18 +450,88 @@ class Pawn:
 
     def moves(self,row,col):
         list_of_moves = []
-        if ((row - 1) >= 0):
-            if Board.isPiece(row - 1,col) == False:
-                list_of_moves.append((row - 1,col))
-                if((row - 2) >= 0):
-                    if Board.isPiece(row - 2,col) == False:
-                        list_of_moves.append((row - 2,col))
+        
+        color_of_the_current_pawn = self.getColor()
+
+        if (color_of_the_current_pawn[0] == gc.GAME_COLOR[0]):
+            if self.getMoveTime() == 0:
+                if ((row - 1) >= 0):
+                    if Board.isPiece(row - 1,col) == False:
+                        list_of_moves.append((row - 1,col))
+                        if((row - 2) >= 0):
+                            if Board.isPiece(row - 2,col) == False:
+                                list_of_moves.append((row - 2,col))
+                    
+                    if (col + 1) < gc.BOX_COUNT_PER_SIDE:
+                        if Board.isPiece(row - 1,col + 1) == True and Board.isSameColor(row,col,row - 1,col + 1) == False:
+                            list_of_moves.append((row - 1,col + 1))
+                    
+                    if((col - 1) >= 0) and Board.isSameColor(row,col,row - 1,col - 1) == False:
+                        if Board.isPiece(row - 1, col - 1) == True:
+                            list_of_moves.append((row - 1,col - 1))
+            else:
+                if ((row - 1) >= 0):
+                    if Board.isPiece(row - 1,col) == False:
+                        list_of_moves.append((row - 1,col))
+                    
+                    if (col + 1) < gc.BOX_COUNT_PER_SIDE:
+                        if Board.isPiece(row - 1,col + 1) == True and Board.isSameColor(row,col,row - 1,col + 1) == False:
+                            list_of_moves.append((row - 1,col + 1))
+                    
+                    if((col - 1) >= 0) and Board.isSameColor(row,col,row - 1,col - 1) == False:
+                        if Board.isPiece(row - 1, col - 1) == True:
+                            list_of_moves.append((row - 1,col - 1))
             
-            if (col + 1) < gc.BOX_COUNT_PER_SIDE:
-                if Board.isPiece(row - 1,col + 1) == True and Board.isSameColor(row,col,row - 1,col + 1) == False:
-                    list_of_moves.append((row - 1,col + 1))
+            if Board.isInboard(row,col - 1) == True and Board.isNone(row,col - 1) == False:
+                notation = Board.board[row][col - 1].getNotation()
+                if notation[1] == 'P' and notation[0] != gc.GAME_COLOR[0]:
+                    if Board.board[row][col - 1].getEnpassant() == True:
+                        list_of_moves.append((row - 1,col - 1))
             
-            if((col - 1) >= 0) and Board.isSameColor(row,col,row - 1,col - 1) == False:
-                if Board.isPiece(row - 1, col - 1) == True:
-                    list_of_moves.append((row - 1,col - 1))
+            if Board.isInboard(row,col + 1) == True and Board.isNone(row,col + 1) == False :
+                notation = Board.board[row][col + 1].getNotation()
+                if notation[1] == 'P' and notation[0] != gc.GAME_COLOR[1]:
+                    if Board.board[row][col + 1].getEnpassant() == True:
+                        list_of_moves.append((row - 1,col + 1))
+        else:
+            if self.getMoveTime() == 0:
+                if ((row + 1) < gc.TOTAL_NUMBER_OF_BOXES):
+                    if Board.isPiece(row + 1,col) == False:
+                        list_of_moves.append((row + 1,col))
+                        if((row + 2) >= 0):
+                            if Board.isPiece(row + 2,col) == False:
+                                list_of_moves.append((row + 2,col))
+                    
+                    if (col + 1) < gc.BOX_COUNT_PER_SIDE:
+                        if Board.isPiece(row + 1,col + 1) == True and Board.isSameColor(row,col,row + 1,col + 1) == False:
+                            list_of_moves.append((row + 1,col + 1))
+                    
+                    if((col - 1) >= 0) and Board.isSameColor(row,col,row + 1,col - 1) == False:
+                        if Board.isPiece(row + 1, col - 1) == True:
+                            list_of_moves.append((row + 1,col - 1))
+            else:
+                if ((row + 1) < gc.TOTAL_NUMBER_OF_BOXES):
+                    if Board.isPiece(row + 1,col) == False:
+                        list_of_moves.append((row + 1,col))
+                    
+                    if (col + 1) < gc.BOX_COUNT_PER_SIDE:
+                        if Board.isPiece(row + 1,col + 1) == True and Board.isSameColor(row,col,row + 1,col + 1) == False:
+                            list_of_moves.append((row + 1,col + 1))
+                    
+                    if((col - 1) >= 0) and Board.isSameColor(row,col,row + 1,col - 1) == False:
+                        if Board.isPiece(row + 1, col - 1) == True:
+                            list_of_moves.append((row + 1,col - 1))
+            
+            if Board.isInboard(row,col - 1) == True and Board.isNone(row,col - 1) == False:
+                notation = Board.board[row][col - 1].getNotation()
+                if notation[1] == 'P' and notation[0] == gc.GAME_COLOR[0]:
+                    if Board.board[row][col - 1].getEnpassant() == True:
+                        list_of_moves.append((row + 1,col - 1))
+            
+            if Board.isInboard(row,col + 1) == True and Board.isNone(row,col + 1) == False :
+                notation = Board.board[row][col + 1].getNotation()
+                if notation[1] == 'P' and notation[0] == gc.GAME_COLOR[0]:
+                    if Board.board[row][col + 1].getEnpassant() == True:
+                        list_of_moves.append((row + 1,col + 1))
+        
         return list_of_moves
