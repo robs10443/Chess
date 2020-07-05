@@ -81,14 +81,14 @@ def displayScreen():
                 col = (mouse_x - gc.SCREEN_MARGIN_SIDE) // gc.BOX_SIDE_LENGTH
                 if selected == False:
                     if Board.isPiece(row,col):
-                        # selected = True
+                        selected = True
                         selected_piece_x = row
                         selected_piece_y = col
                         moves = Board.getMoves(row,col)
-                # else:
-                #     # gm.moveOnBoard(selected_piece_x,selected_piece_y,row,col)
-                #     selected = False
-                #     moves = []
+                else:
+                    # gm.moveOnBoard(selected_piece_x,selected_piece_y,row,col)
+                    selected = False
+                    moves = []
 
         displayMoves(moves)
 

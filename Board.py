@@ -8,34 +8,34 @@ def init(color):
     
     #intialization of board based on the color
     if color.lower() == "white":
-        # board[0][0] = Pieces.Rook("Black")
-        # board[0][1] = Pieces.Knight("Black")
-        # board[0][2] = Pieces.Bishop("Black")
-        # board[0][3] = Pieces.Queen("Black")
-        # board[0][4] = Pieces.King("Black")
-        # board[0][5] = Pieces.Bishop("Black")
-        # board[0][6] = Pieces.Knight("Black")
-        # board[0][7] = Pieces.Rook("Black")
+        board[0][0] = Pieces.Rook("Black")
+        board[0][1] = Pieces.Knight("Black")
+        board[0][2] = Pieces.Bishop("Black")
+        board[0][3] = Pieces.Queen("Black")
+        board[0][4] = Pieces.King("Black")
+        board[0][5] = Pieces.Bishop("Black")
+        board[0][6] = Pieces.Knight("Black")
+        board[0][7] = Pieces.Rook("Black")
         
-        # for x in range(8):
-        #     board[1][x] = Pieces.Pawn("Black")
+        for x in range(8):
+            board[1][x] = Pieces.Pawn("Black")
         
-        # board[7][0] = Pieces.Rook("White")
-        # board[7][1] = Pieces.Knight("White")
-        # board[7][2] = Pieces.Bishop("White")
-        # board[7][3] = Pieces.Queen("White")
-        # board[7][4] = Pieces.King("White")
-        # board[7][5] = Pieces.Bishop("White")
-        # board[7][6] = Pieces.Knight("White")
-        # board[7][7] = Pieces.Rook("White")
-        
-        # for x in range(8):
-        #     board[6][x] = Pieces.Pawn("White")
-        
+        board[7][0] = Pieces.Rook("White")
+        board[7][1] = Pieces.Knight("White")
+        board[7][2] = Pieces.Bishop("White")
+        board[7][3] = Pieces.Queen("White")
         board[7][4] = Pieces.King("White")
-        board[1][1] = Pieces.King("Black")
-        board[4][2] = Pieces.Bishop("Black")
-        board[1][2] = Pieces.Pawn("White")
+        board[7][5] = Pieces.Bishop("White")
+        board[7][6] = Pieces.Knight("White")
+        board[7][7] = Pieces.Rook("White")
+        
+        for x in range(8):
+            board[6][x] = Pieces.Pawn("White")
+        
+        # board[7][4] = Pieces.King("White")
+        # board[1][1] = Pieces.King("Black")
+        # board[4][2] = Pieces.Bishop("Black")
+        # board[1][2] = Pieces.Pawn("White")
         
     else:
         board[0][0] = Pieces.Rook("White")
