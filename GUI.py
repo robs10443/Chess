@@ -86,7 +86,7 @@ def displayScreen():
                         selected_piece_y = col
                         moves = Board.getMoves(row,col)
                 else:
-                    # gm.moveOnBoard(selected_piece_x,selected_piece_y,row,col)
+                    gm.moveOnBoard(selected_piece_x,selected_piece_y,row,col)
                     selected = False
                     moves = []
 
