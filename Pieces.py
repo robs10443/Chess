@@ -3,8 +3,8 @@ import game_config as gc
 
 class King:
     def __init__(self,color):
-        self.long_castle = False
-        self.short_castle = False
+        self.long_castle = True
+        self.short_castle = True
         self.notation = color[0].upper() + "K"
         self.is_move = False
 
@@ -31,7 +31,7 @@ class King:
 
     def moves(self,row,col):
         attacking_list = Board.isAttacked(self.getColor())
-        diffent_king_x, diffent_king_y = Board.findPiece(gc.GAME_COLOR,"King")
+        diffent_king_x, diffent_king_y = Board.findPieceOfOppositeColor(gc.GAME_COLOR,"King")
 
         for t1 in [1,0,-1]:
             for t2 in [1,0,-1]:
@@ -88,10 +88,16 @@ class King:
             list_of_moves.append((row + tx,col + ty))
         
         if self.isShortCastle():
-            list_of_moves.append((row, col + 2))
+            if Board.isInboard(row,col + 1) == True and Board.isInboard(row,col + 2) == True and Board.isInboard(row,col + 3) == True:
+                if Board.isNone(row,col + 1) == True and Board.isNone(row,col + 2) == True and Board.isNone(row,col + 3) == False and Board.board[row][col + 3].IsMoved() == False:
+                    if (row,col + 1) not in attacking_list and (row,col + 2) not in attacking_list:
+                        list_of_moves.append((row, col + 2))
 
         if self.isLongCastle():
-            list_of_moves.append((row,col - 2))
+            if Board.isInboard(row,col - 1) == True and Board.isInboard(row,col - 2) == True and Board.isInboard(row,col - 3) == True and Board.isInboard(row,col - 4) == True:
+                if Board.isNone(row,col - 1) == True and Board.isNone(row,col - 2) == True and Board.isNone(row,col - 3) == True and Board.isNone(row,col - 4) == False and Board.board[row][col - 4].IsMoved() == False:
+                    if (row,col - 1) not in attacking_list and (row,col - 2) not in attacking_list and (row,col - 3) not in attacking_list:
+                        list_of_moves.append((row, col - 2))
 
         return list_of_moves
 

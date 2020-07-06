@@ -33,6 +33,14 @@ def moveOnBoard(start_row,start_col,end_row,end_col):
         if (end_col == (start_col + 1)):
             if(brd.isNone(end_row,end_col) == True):
                 brd.board[start_row][end_col] = None
+
+    if(notation[1] == 'R' and notation[0].lower() == gc.GAME_COLOR[0].lower()):
+        brd.board[start_row][start_col].setIsMoved(True)
+
+    if(notation[1] == 'K' and notation[0].lower() == gc.GAME_COLOR[0].lower()):
+        brd.board[start_row][start_col].setLongCastle(False)
+        brd.board[start_row][start_col].setShortCastle(False)
+
     
 
     movePiece(start_row,start_col,end_row,end_col)

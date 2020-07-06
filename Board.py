@@ -119,7 +119,16 @@ def isAttacked(color_of_piece):
                         attacking_list.append((x,y))
     return attacking_list
 
-def findPiece(color,name_of_piece):
+def findPieceOfOppositeColor(color,name_of_piece):
+    for row in range(gc.BOX_COUNT_PER_SIDE):
+        for col in range(gc.BOX_COUNT_PER_SIDE):
+            if(board[row][col] != None):
+                notation = board[row][col].getNotation()
+                if(notation[0].lower() != color[0].lower() and notation[1].lower() == name_of_piece[0].lower()):
+                    return row,col
+    return -1,-1
+
+def findPieceOfSameColor(color,name_of_piece):
     for row in range(gc.BOX_COUNT_PER_SIDE):
         for col in range(gc.BOX_COUNT_PER_SIDE):
             if(board[row][col] != None):
