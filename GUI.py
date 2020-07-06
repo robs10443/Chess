@@ -117,13 +117,23 @@ def displayScreen():
                         moves = Board.getMoves(row,col)
                 else:
                     notation = Board.getPiece(selected_piece_row,selected_piece_col)
-                    if (notation[1] == 'P'):
-                        if(row == 0):
-                            gm.pawnPromotion(selected_piece_row,selected_piece_col,row,col,pawnPromotionScreen())
+                    if(notation[1] == 'K'):
+                        if((col - selected_piece_col) == 2 or (col - selected_piece_col) == -2):
+                            if (row,col) in moves:
+                                gm.doCastling(selected_piece_row,selected_piece_col,row,col)
                         else:
-                            gm.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
+                            if (row,col) in moves:
+                                gm.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
+                    elif (notation[1] == 'P'):
+                        if(row == 0):
+                            if ((row,col) in moves):
+                                gm.pawnPromotion(selected_piece_row,selected_piece_col,row,col,pawnPromotionScreen())
+                        else:
+                            if  (row,col) in moves:
+                                gm.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
                     else:
-                        gm.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
+                        if (row,col) in moves:
+                            gm.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
                     selected = False
                     moves = []
 

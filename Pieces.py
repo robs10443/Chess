@@ -35,7 +35,7 @@ class King:
 
         for t1 in [1,0,-1]:
             for t2 in [1,0,-1]:
-                if((diffent_king_x + t1,diffent_king_y + t2) not in attacking_list):
+                if Board.isInboard(diffent_king_x + t1,diffent_king_y + t2) and ((diffent_king_x + t1,diffent_king_y + t2) not in attacking_list):
                     attacking_list.append((diffent_king_x + t1,diffent_king_y + t2))
 
         list_of_moves = []
@@ -96,7 +96,7 @@ class King:
         if self.isLongCastle():
             if Board.isInboard(row,col - 1) == True and Board.isInboard(row,col - 2) == True and Board.isInboard(row,col - 3) == True and Board.isInboard(row,col - 4) == True:
                 if Board.isNone(row,col - 1) == True and Board.isNone(row,col - 2) == True and Board.isNone(row,col - 3) == True and Board.isNone(row,col - 4) == False and Board.board[row][col - 4].IsMoved() == False:
-                    if (row,col - 1) not in attacking_list and (row,col - 2) not in attacking_list and (row,col - 3) not in attacking_list:
+                    if (row,col - 1) not in attacking_list and (row,col - 2) not in attacking_list:
                         list_of_moves.append((row, col - 2))
 
         return list_of_moves

@@ -9,9 +9,6 @@ def movePiece(start_row,start_col,end_row,end_col):
 pawn_with_enpassant = (-1,-1)
 
 def moveOnBoard(start_row,start_col,end_row,end_col):
-    if ((end_row,end_col) not in brd.board[start_row][start_col].moves(start_row,start_col)):
-        return False
-    
     global pawn_with_enpassant
 
     row_of_pawn_with_enpassant,col_of_pawn_with_enpassant = pawn_with_enpassant
@@ -59,4 +56,18 @@ def pawnPromotion(start_row,start_col,end_row,end_col,name_of_piece):
     
     if name_of_piece == "Knight":
         brd.board[end_row][end_col] = Pieces.Knight(gc.GAME_COLOR)
+    
+def doCastling(start_row,start_col,end_row,end_col):
+    if ((end_col - start_col) == 2):
+        brd.board[start_row][start_col + 1] = brd.board[start_row][start_col + 3]
+        brd.board[start_row][start_col + 1].setIsMoved(True)
+        brd.board[start_row][start_col + 3] = None
+        brd.board[start_row][end_col] = brd.board[start_row][start_col]
+        brd.board[start_row][start_col] = None
+    else:
+        brd.board[start_row][start_col - 1] = brd.board[start_row][start_col - 4]
+        brd.board[start_row][start_col - 1].setIsMoved(True)
+        brd.board[start_row][start_col - 4] = None
+        brd.board[start_row][end_col] = brd.board[start_row][start_col]
+        brd.board[start_row][start_col] = None
     
