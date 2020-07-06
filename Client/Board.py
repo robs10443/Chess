@@ -84,7 +84,10 @@ def isPiece(x,y):
 def getMoves(x,y):
     if board[x][y] == None:
         return []
-    return board[x][y].moves(x,y)
+    if(getPieceColor(x,y) != gc.GAME_COLOR):
+        return board[x][y].moves(x,y)
+    else:
+        return board[x][y].filteredMoves(x,y)
 
 def isInboard(x,y):
     if x >= 0 and x < gc.BOX_COUNT_PER_SIDE and y >= 0 and y < gc.BOX_COUNT_PER_SIDE:
@@ -133,6 +136,22 @@ def findPieceOfSameColor(color,name_of_piece):
         for col in range(gc.BOX_COUNT_PER_SIDE):
             if(board[row][col] != None):
                 notation = board[row][col].getNotation()
-                if(notation[0].lower() != color[0].lower() and notation[1].lower() == name_of_piece[0].lower()):
+                if(notation[0].lower() == color[0].lower() and notation[1].lower() == name_of_piece[0].lower()):
                     return row,col
     return -1,-1
+
+def filterMovesInCheck(list_of_moves,row,col):
+    row_of_king,col_of_king = findPieceOfSameColor(gc.GAME_COLOR,"King")
+    temp_original = board[row][col]
+    board[row][col] = None
+    new_list = []
+    for moves_row,moves_col in list_of_moves:
+        temp_destination = board[moves_row][moves_col]
+        board[moves_row][moves_col] = temp_original
+        attacking_list = isAttacked(gc.GAME_COLOR)
+        if (row_of_king,col_of_king) not in attacking_list:
+            new_list.append((moves_row,moves_col))
+        board[moves_row][moves_col] = temp_destination
+    board[row][col] = temp_original
+    return new_list
+        

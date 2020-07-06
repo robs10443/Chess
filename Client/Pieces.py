@@ -7,6 +7,7 @@ class King:
         self.short_castle = True
         self.notation = color[0].upper() + "K"
         self.is_move = False
+        self.in_check = False
 
     def getNotation(self):
         return self.notation
@@ -16,6 +17,12 @@ class King:
             return "Black"
         else:
             return "White"
+
+    def setIncheck(self,flag):
+        self.in_check = flag
+    
+    def getIncheck(self):
+        return self.in_check
 
     def setLongCastle(self,flag):
         self.long_castle = flag
@@ -29,13 +36,27 @@ class King:
     def isShortCastle(self):
         return self.short_castle
 
+    def checkForAttackingPiece(self,row,col):
+        flag = True
+        if(Board.getPiece(row,col)[0] != gc.GAME_COLOR[0]):
+            temp = Board.board[row][col]
+            Board.board[row][col] = None
+            if (row,col) in Board.isAttacked(self.getColor()):
+                flag = False
+            Board.board[row][col] = temp
+        return flag
+
+    def filteredMoves(self,row,col):
+        list_of_moves = self.moves(row,col)
+        return Board.filterMovesInCheck(list_of_moves,row,col)
+
     def moves(self,row,col):
         attacking_list = Board.isAttacked(self.getColor())
         diffent_king_x, diffent_king_y = Board.findPieceOfOppositeColor(gc.GAME_COLOR,"King")
 
         for t1 in [1,0,-1]:
             for t2 in [1,0,-1]:
-                if Board.isInboard(diffent_king_x + t1,diffent_king_y + t2) and ((diffent_king_x + t1,diffent_king_y + t2) not in attacking_list):
+                if Board.isInboard(diffent_king_x + t1,diffent_king_y + t2) == True and ((diffent_king_x + t1,diffent_king_y + t2) not in attacking_list):
                     attacking_list.append((diffent_king_x + t1,diffent_king_y + t2))
 
         list_of_moves = []
@@ -43,57 +64,65 @@ class King:
         ty = 0
         # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
-            list_of_moves.append((row + tx,col + ty))
+            if(self.checkForAttackingPiece(row + tx,col + ty) == True):
+                list_of_moves.append((row + tx,col + ty))
         
         tx = 1
         ty = -1
         # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list and Board.isSameColor(row,col,row + tx,col + ty) == False :
-            list_of_moves.append((row + tx,col + ty))
+            if(self.checkForAttackingPiece(row + tx,col + ty) == True):
+                list_of_moves.append((row + tx,col + ty))
         
         tx = 1
         ty = 1
         # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list and Board.isSameColor(row,col,row + tx,col + ty) == False :
-            list_of_moves.append((row + tx,col + ty))
+            if(self.checkForAttackingPiece(row + tx,col + ty) == True):
+                list_of_moves.append((row + tx,col + ty))
         
         tx = -1
         ty = 0
         # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
-            list_of_moves.append((row + tx,col + ty))
+            if(self.checkForAttackingPiece(row + tx,col + ty) == True):
+                list_of_moves.append((row + tx,col + ty))
         
         tx = -1
         ty = 1
         # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
-            list_of_moves.append((row + tx,col + ty))
+            if(self.checkForAttackingPiece(row + tx,col + ty) == True):
+                list_of_moves.append((row + tx,col + ty))
         
         tx = -1
         ty = -1
         # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
-            list_of_moves.append((row + tx,col + ty))
+            if(self.checkForAttackingPiece(row + tx,col + ty) == True):
+                list_of_moves.append((row + tx,col + ty))
         
         tx = 0
         ty = 1
         # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
-            list_of_moves.append((row + tx,col + ty))
+            if(self.checkForAttackingPiece(row + tx,col + ty) == True):
+                list_of_moves.append((row + tx,col + ty))
         
         tx = 0
         ty = -1
         # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
-            list_of_moves.append((row + tx,col + ty))
+            if(self.checkForAttackingPiece(row + tx,col + ty) == True):
+                list_of_moves.append((row + tx,col + ty))
         
-        if self.isShortCastle():
+        if self.isShortCastle() and self.getIncheck() == False:
             if Board.isInboard(row,col + 1) == True and Board.isInboard(row,col + 2) == True and Board.isInboard(row,col + 3) == True:
                 if Board.isNone(row,col + 1) == True and Board.isNone(row,col + 2) == True and Board.isNone(row,col + 3) == False and Board.board[row][col + 3].IsMoved() == False:
                     if (row,col + 1) not in attacking_list and (row,col + 2) not in attacking_list:
                         list_of_moves.append((row, col + 2))
 
-        if self.isLongCastle():
+        if self.isLongCastle() and self.getIncheck() == False:
             if Board.isInboard(row,col - 1) == True and Board.isInboard(row,col - 2) == True and Board.isInboard(row,col - 3) == True and Board.isInboard(row,col - 4) == True:
                 if Board.isNone(row,col - 1) == True and Board.isNone(row,col - 2) == True and Board.isNone(row,col - 3) == True and Board.isNone(row,col - 4) == False and Board.board[row][col - 4].IsMoved() == False:
                     if (row,col - 1) not in attacking_list and (row,col - 2) not in attacking_list:
@@ -113,6 +142,10 @@ class Queen:
 
     def getNotation(self):
         return self.notation
+
+    def filteredMoves(self,row,col):
+        list_of_moves = self.moves(row,col)
+        return Board.filterMovesInCheck(list_of_moves,row,col)
 
     def moves(self,row,col):
         list_of_moves = []
@@ -221,7 +254,6 @@ class Queen:
                 break
             else:
                 break
-        
         return list_of_moves
         
         
@@ -245,6 +277,10 @@ class Rook:
 
     def IsMoved(self):
         return self.is_moved
+
+    def filteredMoves(self,row,col):
+        list_of_moves = self.moves(row,col)
+        return Board.filterMovesInCheck(list_of_moves,row,col)
 
     def moves(self,row,col):
         list_of_moves = []
@@ -315,6 +351,10 @@ class Bishop:
             return "Black"
         else:
             return "White"
+
+    def filteredMoves(self,row,col):
+        list_of_moves = self.moves(row,col)
+        return Board.filterMovesInCheck(list_of_moves,row,col)
 
     def moves(self,row,col):
         list_of_moves = []
@@ -388,6 +428,10 @@ class Knight:
         else:
             return "White"
 
+    def filteredMoves(self,row,col):
+        list_of_moves = self.moves(row,col)
+        return Board.filterMovesInCheck(list_of_moves,row,col)
+
     def moves(self,row,col):
         list_of_moves = []
 
@@ -453,6 +497,9 @@ class Pawn:
         
         return list_of_moves
         
+    def filteredMoves(self,row,col):
+        list_of_moves = self.moves(row,col)
+        return Board.filterMovesInCheck(list_of_moves,row,col)
 
     def moves(self,row,col):
         list_of_moves = []
@@ -496,7 +543,7 @@ class Pawn:
             
             if Board.isInboard(row,col + 1) == True and Board.isNone(row,col + 1) == False :
                 notation = Board.board[row][col + 1].getNotation()
-                if notation[1] == 'P' and notation[0] != gc.GAME_COLOR[1]:
+                if notation[1] == 'P' and notation[0] != gc.GAME_COLOR[0]:
                     if Board.board[row][col + 1].getEnpassant() == True:
                         list_of_moves.append((row - 1,col + 1))
         else:

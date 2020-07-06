@@ -38,12 +38,14 @@ def moveOnBoard(start_row,start_col,end_row,end_col):
         brd.board[start_row][start_col].setLongCastle(False)
         brd.board[start_row][start_col].setShortCastle(False)
 
-    
-
     movePiece(start_row,start_col,end_row,end_col)
+    isInCheck()
     return True
     
 def pawnPromotion(start_row,start_col,end_row,end_col,name_of_piece):
+    global pawn_with_enpassant
+    
+    pawn_with_enpassant = (-1,-1)
     brd.board[start_row][start_col] = None
     if name_of_piece == "Queen":
         brd.board[end_row][end_col] = Pieces.Queen(gc.GAME_COLOR)
@@ -56,8 +58,13 @@ def pawnPromotion(start_row,start_col,end_row,end_col,name_of_piece):
     
     if name_of_piece == "Knight":
         brd.board[end_row][end_col] = Pieces.Knight(gc.GAME_COLOR)
+
+    isInCheck()
     
 def doCastling(start_row,start_col,end_row,end_col):
+    global pawn_with_enpassant
+    
+    pawn_with_enpassant = (-1,-1)
     if ((end_col - start_col) == 2):
         brd.board[start_row][start_col + 1] = brd.board[start_row][start_col + 3]
         brd.board[start_row][start_col + 1].setIsMoved(True)
@@ -70,4 +77,27 @@ def doCastling(start_row,start_col,end_row,end_col):
         brd.board[start_row][start_col - 4] = None
         brd.board[start_row][end_col] = brd.board[start_row][start_col]
         brd.board[start_row][start_col] = None
+    isInCheck()
+
+def isInCheck():
+    attacking_list = brd.isAttacked(gc.GAME_COLOR)
+    row_of_king,col_of_king = brd.findPieceOfSameColor(gc.GAME_COLOR,"King")
+    if (row_of_king,col_of_king) not in attacking_list:
+        brd.board[row_of_king][col_of_king].setIncheck(False)
+        return False
+    flag_for_checkmate = True
+    for row in range(gc.BOX_COUNT_PER_SIDE):
+        for col in range(gc.BOX_COUNT_PER_SIDE):
+            if (brd.getPieceColor(row,col) == gc.GAME_COLOR):
+                if(len(brd.getMoves(row,col)) >= 1):
+                    flag_for_checkmate = False
+                    break
+        if(flag_for_checkmate == False):
+            break
     
+    if (flag_for_checkmate == True):
+        print("You are checkmated Bad Luck!! :(")
+    brd.board[row_of_king][col_of_king].setIncheck(True)
+
+def checkmated():
+    pass
