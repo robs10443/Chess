@@ -54,6 +54,36 @@ def displayMoves(moves):
         starting_y_of_box = x*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_TOP + margin
         screen.blit(dot_image,(starting_x_of_box,starting_y_of_box))
 
+
+def pawnPromotionScreen():
+    running = True
+
+    while running:
+        current_event = event.get()
+        draw.rect(screen,gc.GREEN,(gc.PROMOTION_SCREEN_OFFSET_X,gc.PROMOTION_SCREEN_OFFSET_Y,gc.PROMOTION_SCREEN_LENGTH,gc.PROMOTION_SCREEN_WIDTH))
+        list_of_piece = ["Queen","Rook","Bishop","Knight"]
+        for i,piece in enumerate(list_of_piece):
+            image_path = 'Chess_Piece/' + gc.GAME_COLOR + '_' + piece + '.png'
+            image_of_piece = image.load(image_path)
+            image_of_piece = transform.scale(image_of_piece,(gc.PROMOTION_BOX_LENGTH,gc.PROMOTION_BOX_LENGTH))
+            screen.blit(image_of_piece,(gc.PROMOTION_SCREEN_OFFSET_X + i*(gc.PROMOTION_FULL_BOX_LENGTH),gc.PROMOTION_SCREEN_OFFSET_Y))
+
+        for e in current_event:
+            if e.type == pygame.QUIT:
+                running = False
+                exit()
+
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x,mouse_y = pygame.mouse.get_pos()
+                x_coordinate = (mouse_x - gc.PROMOTION_SCREEN_OFFSET_X) // gc.PROMOTION_FULL_BOX_LENGTH
+                y_coordinate = (mouse_y - gc.PROMOTION_SCREEN_OFFSET_Y)
+                if y_coordinate >= 0 and y_coordinate <= gc.PROMOTION_FULL_BOX_LENGTH:
+                    if x_coordinate >= 0 and x_coordinate <=3:
+                        return list_of_piece[x_coordinate]
+
+        display.flip()
+    
+
 def displayScreen():
     running = True
 
@@ -61,8 +91,8 @@ def displayScreen():
 
     selected = False
 
-    selected_piece_x = -1
-    selected_piece_y = -1
+    selected_piece_row = -1
+    selected_piece_col = -1
 
     while running:
         current_event = event.get()
@@ -82,11 +112,18 @@ def displayScreen():
                 if selected == False:
                     if Board.isPiece(row,col):
                         selected = True
-                        selected_piece_x = row
-                        selected_piece_y = col
+                        selected_piece_row = row
+                        selected_piece_col = col
                         moves = Board.getMoves(row,col)
                 else:
-                    gm.moveOnBoard(selected_piece_x,selected_piece_y,row,col)
+                    notation = Board.getPiece(selected_piece_row,selected_piece_col)
+                    if (notation[1] == 'P'):
+                        if(row == 0):
+                            gm.pawnPromotion(selected_piece_row,selected_piece_col,row,col,pawnPromotionScreen())
+                        else:
+                            gm.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
+                    else:
+                        gm.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
                     selected = False
                     moves = []
 

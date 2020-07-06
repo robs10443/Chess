@@ -1,5 +1,5 @@
 import Board as brd
-import Pieces as pc
+import Pieces
 import game_config as gc
 
 def movePiece(start_row,start_col,end_row,end_col):
@@ -33,15 +33,22 @@ def moveOnBoard(start_row,start_col,end_row,end_col):
         if (end_col == (start_col + 1)):
             if(brd.isNone(end_row,end_col) == True):
                 brd.board[start_row][end_col] = None
-
-        #pormotion
-        if (end_row == 0):
-            pass
-        
-        #promotion
-        if (end_col == 7):
-            pass
+    
 
     movePiece(start_row,start_col,end_row,end_col)
     return True
+    
+def pawnPromotion(start_row,start_col,end_row,end_col,name_of_piece):
+    brd.board[start_row][start_col] = None
+    if name_of_piece == "Queen":
+        brd.board[end_row][end_col] = Pieces.Queen(gc.GAME_COLOR)
+    
+    if name_of_piece == "Rook":
+        brd.board[end_row][end_col] = Pieces.Rook(gc.GAME_COLOR)
+    
+    if name_of_piece == "Bishop":
+        brd.board[end_row][end_col] = Pieces.Bishop(gc.GAME_COLOR)
+    
+    if name_of_piece == "Knight":
+        brd.board[end_row][end_col] = Pieces.Knight(gc.GAME_COLOR)
     

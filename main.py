@@ -12,4 +12,5 @@ def initGame(color):
 
 def callDisplayScreen():
     gui.displayScreen()
+
 initGame("White")
