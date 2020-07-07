@@ -1,4 +1,2 @@
 # Chess
-
-![Image For Sample]
-(https://i.imgur.com/I3bEGlQ.png)
+![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
