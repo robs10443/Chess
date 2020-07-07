@@ -39,6 +39,9 @@ def createGame(player1,player2):
         
         print(msg)
 
+        if(len(msg) == 1):
+            player2.send('2'.encode('utf-8'))
+            break
         if(int(msg[0]) == 0):
             flag,starting_row,starting_col,ending_row,ending_col,move,promotion = hm.convertData(msg)
 
@@ -59,7 +62,9 @@ def createGame(player1,player2):
 
         msg = player2.recv(1024).decode('utf-8')
         print(msg)
-        
+        if(len(msg) == 1):
+            player1.send('2')
+            break
         if(int(msg[0]) == 0):
             flag,starting_row,starting_col,ending_row,ending_col,move,promotion = hm.convertData(msg)
 
