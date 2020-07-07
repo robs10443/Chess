@@ -37,8 +37,6 @@ Now Enjoy :grinning:
 
 ![Images](https://i.imgur.com/q15j3Nu.png)
 
-![Images](https://i.imgur.com/q15j3Nu.png)
-
 ![Images](https://i.imgur.com/V56pLZy.png)
 
 ![Images](https://i.imgur.com/Uw12y1J.png)
