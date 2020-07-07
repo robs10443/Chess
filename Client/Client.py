@@ -74,7 +74,9 @@ def displayChessBoard():
 
 def displayCurrentStatusBoard(temp_board):
     if(gc.YOUR_TURN == True):
-        draw.rect(screen,gc.BLACK,(0,0,30,30))
+        image_of_your_turn = image.load('Other/YourTurn.png')
+        image_of_your_turn = transform.scale(image_of_your_turn,(128,40))
+        screen.blit(image_of_your_turn,(0,0))
     for row in range(gc.BOX_COUNT_PER_SIDE):
         for col in range(gc.BOX_COUNT_PER_SIDE):
             cur = Board.getPiece(row,col)
@@ -83,8 +85,7 @@ def displayCurrentStatusBoard(temp_board):
                 path_of_piece = 'Chess_Piece/' + name_of_piece
                 image_of_piece = image.load(path_of_piece)
                 image_of_piece = transform.scale(image_of_piece,(gc.BOX_SIDE_LENGTH,gc.BOX_SIDE_LENGTH))
-                
-                starting_x_of_box = col*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_SIDE
+                starting_x_of_box = (col)*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_SIDE
                 starting_y_of_box = row*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_TOP
 
                 screen.blit(image_of_piece,(starting_x_of_box,starting_y_of_box))
@@ -155,45 +156,59 @@ def displayScreen():
                 mouse_x,mouse_y = pygame.mouse.get_pos()
                 row = (mouse_y - gc.SCREEN_MARGIN_TOP) // gc.BOX_SIDE_LENGTH
                 col = (mouse_x - gc.SCREEN_MARGIN_SIDE) // gc.BOX_SIDE_LENGTH
-                if (gc.YOUR_TURN == False):
-                    selected = False
-                if selected == False:
-                    if Board.isPiece(row,col):
-                        selected = True
-                        selected_piece_row = row
-                        selected_piece_col = col
-                        moves = Board.getMoves(row,col)
-                elif (gc.YOUR_TURN == True):
-                    if (row,col) in moves:
-                        notation = Board.getPiece(selected_piece_row,selected_piece_col)
-                        print(selected_piece_row,selected_piece_col)
-                        flag = 0
-                        pawn_promotion_piece = ""
-                        if(notation[1] == 'K'):
-                            if((col - selected_piece_col) == 2 or (col - selected_piece_col) == -2):
-                                flag = 2
-                                Game.doCastling(selected_piece_row,selected_piece_col,row,col)
-                            else:
-                                Game.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
-                        elif (notation[1] == 'P'):
-                            if(row == 0):
-                                flag = 1
-                                pawn_promotion_piece = pawnPromotionScreen()
-                                Game.pawnPromotion(1,selected_piece_row,selected_piece_col,row,col,pawn_promotion_piece)
-                            else:
-                                Game.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
+                if(Board.isInboard(row,col)):
+                    if (gc.YOUR_TURN == False):
+                        if Board.isPiece(row,col):
+                            selected_piece_row = row
+                            selected_piece_col = col
+                            moves = Board.getMoves(row,col)
+                    else:
+                        if selected == False:
+                            if Board.isPiece(row,col):
+                                selected = True
+                                selected_piece_row = row
+                                selected_piece_col = col
+                                moves = Board.getMoves(row,col)
                         else:
-                            Game.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
-                    
-                        if(flag == 1):
-                            sendMsg(hm.convertDataToHeader(0,selected_piece_row,selected_piece_col,row,col,"P",pawn_promotion_piece))
-                        elif(flag == 2):
-                            sendMsg(hm.convertDataToHeader(0,selected_piece_row,selected_piece_col,row,col,"C",""))
-                        else:
-                            sendMsg(hm.convertDataToHeader(0,selected_piece_row,selected_piece_col,row,col,"M",""))
-                    
-                    selected = False
-                    moves = []
+                            if (row,col) in moves:
+                                notation = Board.getPiece(selected_piece_row,selected_piece_col)
+                                print(selected_piece_row,selected_piece_col)
+                                flag = 0
+                                pawn_promotion_piece = ""
+                                if(notation[1] == 'K'):
+                                    if((col - selected_piece_col) == 2 or (col - selected_piece_col) == -2):
+                                        flag = 2
+                                        Game.doCastling(selected_piece_row,selected_piece_col,row,col)
+                                    else:
+                                        Game.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
+                                elif (notation[1] == 'P'):
+                                    if(row == 0):
+                                        flag = 1
+                                        pawn_promotion_piece = pawnPromotionScreen()
+                                        Game.pawnPromotion(1,selected_piece_row,selected_piece_col,row,col,pawn_promotion_piece)
+                                    else:
+                                        Game.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
+                                else:
+                                    Game.moveOnBoard(selected_piece_row,selected_piece_col,row,col)
+                            
+                                if(flag == 1):
+                                    sendMsg(hm.convertDataToHeader(0,selected_piece_row,selected_piece_col,row,col,"P",pawn_promotion_piece))
+                                elif(flag == 2):
+                                    sendMsg(hm.convertDataToHeader(0,selected_piece_row,selected_piece_col,row,col,"C",""))
+                                else:
+                                    sendMsg(hm.convertDataToHeader(0,selected_piece_row,selected_piece_col,row,col,"M",""))
+                                selected = False
+                                moves = []
+                            else:
+                                if Board.isPiece(row,col):
+                                    selected = True
+                                    selected_piece_row = row
+                                    selected_piece_col = col
+                                    moves = Board.getMoves(row,col)
+                                else:
+                                    selected = False
+                                    moves = []
+                        
 
         displayMoves(moves)
 

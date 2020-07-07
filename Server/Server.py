@@ -45,6 +45,11 @@ def createGame(player1,player2):
             starting_row = 7 - starting_row
             ending_row = 7 - ending_row
 
+            starting_col = 7 - starting_col
+            ending_col = 7 - ending_col
+
+            print(starting_row,starting_col,ending_row,ending_col)
+
             print(promotion)
             player2.send(hm.convertDataToHeader(flag,starting_row,starting_col,ending_row,ending_col,move,promotion).encode('utf-8'))
         else:
@@ -60,6 +65,11 @@ def createGame(player1,player2):
 
             starting_row = 7 - starting_row
             ending_row = 7 - ending_row
+
+            starting_col = 7 - starting_col
+            ending_col = 7 - ending_col
+            
+
             player1.send(hm.convertDataToHeader(flag,starting_row,starting_col,ending_row,ending_col,move,promotion).encode('utf-8'))
         else:
             player1.send(msg.encode('utf-8'))
