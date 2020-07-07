@@ -85,7 +85,7 @@ def getMoves(x,y):
     if board[x][y] == None:
         return []
     if(getPieceColor(x,y) != gc.GAME_COLOR):
-        return board[x][y].moves(x,y)
+        return []
     else:
         return board[x][y].filteredMoves(x,y)
 
@@ -154,4 +154,17 @@ def filterMovesInCheck(list_of_moves,row,col):
         board[moves_row][moves_col] = temp_destination
     board[row][col] = temp_original
     return new_list
-        
+
+def filterMovesForKing(list_of_moves,row,col):
+    temp_original = board[row][col]
+    board[row][col] = None
+    new_list = []
+    for moves_row,moves_col in list_of_moves:
+        temp_destination = board[moves_row][moves_col]
+        board[moves_row][moves_col] = temp_original
+        attacking_list = isAttacked(gc.GAME_COLOR)
+        if (moves_row,moves_col) not in attacking_list:
+            new_list.append((moves_row,moves_col))
+        board[moves_row][moves_col] = temp_destination
+    board[row][col] = temp_original
+    return new_list

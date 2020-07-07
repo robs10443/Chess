@@ -47,8 +47,10 @@ class King:
         return flag
 
     def filteredMoves(self,row,col):
+        if(self.getColor() != gc.GAME_COLOR):
+            return []
         list_of_moves = self.moves(row,col)
-        return Board.filterMovesInCheck(list_of_moves,row,col)
+        return Board.filterMovesForKing(list_of_moves,row,col)
 
     def moves(self,row,col):
         attacking_list = Board.isAttacked(self.getColor())
@@ -144,6 +146,8 @@ class Queen:
         return self.notation
 
     def filteredMoves(self,row,col):
+        if(self.getColor() != gc.GAME_COLOR):
+            return []
         list_of_moves = self.moves(row,col)
         return Board.filterMovesInCheck(list_of_moves,row,col)
 
@@ -279,6 +283,8 @@ class Rook:
         return self.is_moved
 
     def filteredMoves(self,row,col):
+        if(self.getColor() != gc.GAME_COLOR):
+            return []
         list_of_moves = self.moves(row,col)
         return Board.filterMovesInCheck(list_of_moves,row,col)
 
@@ -353,6 +359,8 @@ class Bishop:
             return "White"
 
     def filteredMoves(self,row,col):
+        if(self.getColor() != gc.GAME_COLOR):
+            return []
         list_of_moves = self.moves(row,col)
         return Board.filterMovesInCheck(list_of_moves,row,col)
 
@@ -429,6 +437,8 @@ class Knight:
             return "White"
 
     def filteredMoves(self,row,col):
+        if(self.getColor() != gc.GAME_COLOR):
+            return []
         list_of_moves = self.moves(row,col)
         return Board.filterMovesInCheck(list_of_moves,row,col)
 
@@ -498,6 +508,8 @@ class Pawn:
         return list_of_moves
         
     def filteredMoves(self,row,col):
+        if(self.getColor() != gc.GAME_COLOR):
+            return []
         list_of_moves = self.moves(row,col)
         return Board.filterMovesInCheck(list_of_moves,row,col)
 
