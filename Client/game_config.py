@@ -22,6 +22,8 @@ PROMOTION_SCREEN_MARGIN = 4
 PROMOTION_SCREEN_OFFSET_X = 200
 PROMOTION_SCREEN_OFFSET_Y = 300
 YOUR_TURN = False
+YOU_WON = False
+YOU_LOSE = False
 
 piece_file_name = {
     "BB" : "Black_Bishop.png",

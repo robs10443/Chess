@@ -7,6 +7,7 @@ import pygame
 import Board
 import Game as gm
 import Header_Manager as hm
+import sys
 from pygame import display, event, image, Surface, draw, transform
 
 soc = socket.socket()
@@ -17,17 +18,17 @@ soc.connect(('127.0.0.1',port))
 
 color = soc.recv(1024).decode('utf-8')
 
-print('Color mil gaya : ' + color)
-
 def sendMsg(msg):
-    print('moves sent' + msg)
     soc.send(msg.encode('utf-8'))
     gc.YOUR_TURN = False
 
 def recvMsg():
     while(True):
         msg = soc.recv(1024).decode('utf-8')
-        print ("Moves recivied " + msg)
+        if(len(msg) == 0):
+            return 
+        if(int(msg[0]) == 2):
+            return 
         if (int(msg[0]) == 0):
             _,starting_row,starting_col,ending_row,ending_col,move,promotion = hm.convertData(msg)
 
@@ -38,13 +39,16 @@ def recvMsg():
             else:
                 Game.doCastling(starting_row,starting_col,ending_row,ending_col)
             if (Game.isInCheck() == True):
+                gc.YOU_LOSE = True
                 sendMsg(str(1) + "C")
                 break
             gc.YOUR_TURN = True
         else:
             flag = hm.convertDataFromSecondFlag(msg)
             if (flag == 'C'):
+                gc.YOU_WON = True
                 Game.wonByCheckmate()
+                break
 
 
 pygame.init()
@@ -100,6 +104,15 @@ def displayMoves(moves):
         starting_y_of_box = x*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_TOP + margin
         screen.blit(dot_image,(starting_x_of_box,starting_y_of_box))
 
+def youLose():
+    lose_image = image.load('Other/lose.png')
+    lose_image = transform.scale(lose_image,(600,300))
+    screen.blit(lose_image,(20,200))
+
+def youWon():
+    won_image = image.load('Other/won.png')
+    won_image = transform.scale(won_image,(420,420))
+    screen.blit(won_image,(100,200))
 
 def pawnPromotionScreen():
     running = True
@@ -147,12 +160,25 @@ def displayScreen():
 
         displayCurrentStatusBoard(temp_board)
         
+        if(gc.YOU_LOSE):
+            youLose()
+
+        if(gc.YOU_WON):
+            youWon()
+
         for e in current_event:
             if e.type == pygame.QUIT:
                 running = False
-                exit()
+                pygame.quit()
+                sendMsg('2')
+                sys.exit()
+                return 
+            
+            if e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_ESCAPE:
+                    running = False
 
-            if e.type == pygame.MOUSEBUTTONDOWN:
+            if e.type == pygame.MOUSEBUTTONDOWN and gc.YOU_WON == False and gc.YOU_LOSE == False:
                 mouse_x,mouse_y = pygame.mouse.get_pos()
                 row = (mouse_y - gc.SCREEN_MARGIN_TOP) // gc.BOX_SIDE_LENGTH
                 col = (mouse_x - gc.SCREEN_MARGIN_SIDE) // gc.BOX_SIDE_LENGTH
@@ -172,7 +198,6 @@ def displayScreen():
                         else:
                             if (row,col) in moves:
                                 notation = Board.getPiece(selected_piece_row,selected_piece_col)
-                                print(selected_piece_row,selected_piece_col)
                                 flag = 0
                                 pawn_promotion_piece = ""
                                 if(notation[1] == 'K'):
@@ -214,6 +239,7 @@ def displayScreen():
 
         display.flip()
         pygame.time.wait(1)
+    
 
 def initGame(color):
     gc.GAME_COLOR = color

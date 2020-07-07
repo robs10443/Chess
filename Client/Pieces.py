@@ -64,56 +64,48 @@ class King:
         list_of_moves = []
         tx = 1
         ty = 0
-        # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
             if(self.checkForAttackingPiece(row + tx,col + ty) == True):
                 list_of_moves.append((row + tx,col + ty))
         
         tx = 1
         ty = -1
-        # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list and Board.isSameColor(row,col,row + tx,col + ty) == False :
             if(self.checkForAttackingPiece(row + tx,col + ty) == True):
                 list_of_moves.append((row + tx,col + ty))
         
         tx = 1
         ty = 1
-        # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list and Board.isSameColor(row,col,row + tx,col + ty) == False :
             if(self.checkForAttackingPiece(row + tx,col + ty) == True):
                 list_of_moves.append((row + tx,col + ty))
         
         tx = -1
         ty = 0
-        # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
             if(self.checkForAttackingPiece(row + tx,col + ty) == True):
                 list_of_moves.append((row + tx,col + ty))
         
         tx = -1
         ty = 1
-        # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
             if(self.checkForAttackingPiece(row + tx,col + ty) == True):
                 list_of_moves.append((row + tx,col + ty))
         
         tx = -1
         ty = -1
-        # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
             if(self.checkForAttackingPiece(row + tx,col + ty) == True):
                 list_of_moves.append((row + tx,col + ty))
         
         tx = 0
         ty = 1
-        # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
             if(self.checkForAttackingPiece(row + tx,col + ty) == True):
                 list_of_moves.append((row + tx,col + ty))
         
         tx = 0
         ty = -1
-        # print (row + tx,col + ty)
         if Board.isInboard(row + tx,col + ty) == True and (row + tx,col + ty) not in attacking_list  and Board.isSameColor(row,col,row + tx,col + ty) == False :
             if(self.checkForAttackingPiece(row + tx,col + ty) == True):
                 list_of_moves.append((row + tx,col + ty))

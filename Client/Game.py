@@ -11,6 +11,11 @@ pawn_with_enpassant = (-1,-1)
 def moveOnBoard(start_row,start_col,end_row,end_col):
     global pawn_with_enpassant
 
+    attacking_list = brd.isAttacked(gc.GAME_COLOR)
+    row_of_king,col_of_king = brd.findPieceOfSameColor(gc.GAME_COLOR,"King")
+    if (row_of_king,col_of_king) not in attacking_list:
+        brd.board[row_of_king][col_of_king].setIncheck(False)
+
     row_of_pawn_with_enpassant,col_of_pawn_with_enpassant = pawn_with_enpassant
     pawn_with_enpassant = (-1,-1)
     if row_of_pawn_with_enpassant != -1:
@@ -39,9 +44,19 @@ def moveOnBoard(start_row,start_col,end_row,end_col):
         brd.board[start_row][start_col].setShortCastle(False)
 
     movePiece(start_row,start_col,end_row,end_col)
+    attacking_list = brd.isAttacked(gc.GAME_COLOR)
+    row_of_king,col_of_king = brd.findPieceOfSameColor(gc.GAME_COLOR,"King")
+    if (row_of_king,col_of_king) not in attacking_list:
+        brd.board[row_of_king][col_of_king].setIncheck(False)
+    
     return True
     
 def pawnPromotion(flag,start_row,start_col,end_row,end_col,name_of_piece):
+    attacking_list = brd.isAttacked(gc.GAME_COLOR)
+    row_of_king,col_of_king = brd.findPieceOfSameColor(gc.GAME_COLOR,"King")
+    if (row_of_king,col_of_king) not in attacking_list:
+        brd.board[row_of_king][col_of_king].setIncheck(False)
+    
     global pawn_with_enpassant
     color = ""
     if(flag == 0):
@@ -65,10 +80,21 @@ def pawnPromotion(flag,start_row,start_col,end_row,end_col,name_of_piece):
     if name_of_piece.lower() == "Knight".lower():
         brd.board[end_row][end_col] = Pieces.Knight(color)
 
+    attacking_list = brd.isAttacked(gc.GAME_COLOR)
+    row_of_king,col_of_king = brd.findPieceOfSameColor(gc.GAME_COLOR,"King")
+    if (row_of_king,col_of_king) not in attacking_list:
+        brd.board[row_of_king][col_of_king].setIncheck(False)
+    
+
     
 def doCastling(start_row,start_col,end_row,end_col):
     global pawn_with_enpassant
     
+    attacking_list = brd.isAttacked(gc.GAME_COLOR)
+    row_of_king,col_of_king = brd.findPieceOfSameColor(gc.GAME_COLOR,"King")
+    if (row_of_king,col_of_king) not in attacking_list:
+        brd.board[row_of_king][col_of_king].setIncheck(False)
+
     pawn_with_enpassant = (-1,-1)
     if ((end_col - start_col) == 2):
         brd.board[start_row][start_col + 1] = brd.board[start_row][start_col + 3]
@@ -82,6 +108,12 @@ def doCastling(start_row,start_col,end_row,end_col):
         brd.board[start_row][start_col - 4] = None
         brd.board[start_row][end_col] = brd.board[start_row][start_col]
         brd.board[start_row][start_col] = None
+    
+    attacking_list = brd.isAttacked(gc.GAME_COLOR)
+    row_of_king,col_of_king = brd.findPieceOfSameColor(gc.GAME_COLOR,"King")
+    if (row_of_king,col_of_king) not in attacking_list:
+        brd.board[row_of_king][col_of_king].setIncheck(False)
+    
 
 def isInCheck():
     attacking_list = brd.isAttacked(gc.GAME_COLOR)
@@ -100,7 +132,6 @@ def isInCheck():
             break
     brd.board[row_of_king][col_of_king].setIncheck(True)
     if (flag_for_checkmate == True):
-        print("Your are been checkmated :(")
         return True
     return False
 
@@ -108,5 +139,4 @@ def checkmated():
     pass
 
 def wonByCheckmate():
-    print("You Won by checkmate :)")
     exit()

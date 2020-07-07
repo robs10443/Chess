@@ -28,6 +28,7 @@ def acceptConnections():
     
 
 def createGame(player1,player2):
+    print('Game Started')
     player1.send('White'.encode('utf-8'))
     
     player2.send('Black'.encode('utf-8'))
@@ -37,8 +38,6 @@ def createGame(player1,player2):
     while game:
         msg = player1.recv(1024).decode('utf-8')
         
-        print(msg)
-
         if(len(msg) == 1):
             player2.send('2'.encode('utf-8'))
             break
@@ -51,9 +50,6 @@ def createGame(player1,player2):
             starting_col = 7 - starting_col
             ending_col = 7 - ending_col
 
-            print(starting_row,starting_col,ending_row,ending_col)
-
-            print(promotion)
             player2.send(hm.convertDataToHeader(flag,starting_row,starting_col,ending_row,ending_col,move,promotion).encode('utf-8'))
         else:
             player2.send(msg.encode('utf-8'))
@@ -61,7 +57,6 @@ def createGame(player1,player2):
             break
 
         msg = player2.recv(1024).decode('utf-8')
-        print(msg)
         if(len(msg) == 1):
             player1.send('2')
             break
