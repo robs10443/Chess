@@ -96,18 +96,32 @@ def doCastling(start_row,start_col,end_row,end_col):
         brd.board[row_of_king][col_of_king].setIncheck(False)
 
     pawn_with_enpassant = (-1,-1)
-    if ((end_col - start_col) == 2):
-        brd.board[start_row][start_col + 1] = brd.board[start_row][start_col + 3]
-        brd.board[start_row][start_col + 1].setIsMoved(True)
-        brd.board[start_row][start_col + 3] = None
-        brd.board[start_row][end_col] = brd.board[start_row][start_col]
-        brd.board[start_row][start_col] = None
+    if(gc.GAME_COLOR == "White"):
+        if ((end_col - start_col) == 2):
+            brd.board[start_row][start_col + 1] = brd.board[start_row][start_col + 3]
+            brd.board[start_row][start_col + 1].setIsMoved(True)
+            brd.board[start_row][start_col + 3] = None
+            brd.board[start_row][end_col] = brd.board[start_row][start_col]
+            brd.board[start_row][start_col] = None
+        else:
+            brd.board[start_row][start_col - 1] = brd.board[start_row][start_col - 4]
+            brd.board[start_row][start_col - 1].setIsMoved(True)
+            brd.board[start_row][start_col - 4] = None
+            brd.board[start_row][end_col] = brd.board[start_row][start_col]
+            brd.board[start_row][start_col] = None
     else:
-        brd.board[start_row][start_col - 1] = brd.board[start_row][start_col - 4]
-        brd.board[start_row][start_col - 1].setIsMoved(True)
-        brd.board[start_row][start_col - 4] = None
-        brd.board[start_row][end_col] = brd.board[start_row][start_col]
-        brd.board[start_row][start_col] = None
+        if ((end_col - start_col) == -2):
+            brd.board[start_row][start_col - 1] = brd.board[start_row][start_col - 3]
+            brd.board[start_row][start_col - 1].setIsMoved(True)
+            brd.board[start_row][start_col - 3] = None
+            brd.board[start_row][end_col] = brd.board[start_row][start_col]
+            brd.board[start_row][start_col] = None
+        else:
+            brd.board[start_row][start_col + 1] = brd.board[start_row][start_col + 4]
+            brd.board[start_row][start_col + 1].setIsMoved(True)
+            brd.board[start_row][start_col + 4] = None
+            brd.board[start_row][end_col] = brd.board[start_row][start_col]
+            brd.board[start_row][start_col] = None
     
     attacking_list = brd.isAttacked(gc.GAME_COLOR)
     row_of_king,col_of_king = brd.findPieceOfSameColor(gc.GAME_COLOR,"King")

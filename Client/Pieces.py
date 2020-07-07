@@ -110,18 +110,31 @@ class King:
             if(self.checkForAttackingPiece(row + tx,col + ty) == True):
                 list_of_moves.append((row + tx,col + ty))
         
-        if self.isShortCastle() and self.getIncheck() == False:
-            if Board.isInboard(row,col + 1) == True and Board.isInboard(row,col + 2) == True and Board.isInboard(row,col + 3) == True:
-                if Board.isNone(row,col + 1) == True and Board.isNone(row,col + 2) == True and Board.isNone(row,col + 3) == False and Board.board[row][col + 3].IsMoved() == False:
-                    if (row,col + 1) not in attacking_list and (row,col + 2) not in attacking_list:
-                        list_of_moves.append((row, col + 2))
+        if (gc.GAME_COLOR == "White"):
+            if self.isShortCastle() and (self.getIncheck() == False):
+                if Board.isInboard(row,col + 1) == True and Board.isInboard(row,col + 2) == True and Board.isInboard(row,col + 3) == True:
+                    if Board.isNone(row,col + 1) == True and Board.isNone(row,col + 2) == True and Board.isNone(row,col + 3) == False and Board.board[row][col + 3].IsMoved() == False:
+                        if (row,col + 1) not in attacking_list and (row,col + 2) not in attacking_list:
+                            list_of_moves.append((row, col + 2))
 
-        if self.isLongCastle() and self.getIncheck() == False:
-            if Board.isInboard(row,col - 1) == True and Board.isInboard(row,col - 2) == True and Board.isInboard(row,col - 3) == True and Board.isInboard(row,col - 4) == True:
-                if Board.isNone(row,col - 1) == True and Board.isNone(row,col - 2) == True and Board.isNone(row,col - 3) == True and Board.isNone(row,col - 4) == False and Board.board[row][col - 4].IsMoved() == False:
-                    if (row,col - 1) not in attacking_list and (row,col - 2) not in attacking_list:
-                        list_of_moves.append((row, col - 2))
+            if self.isLongCastle() and self.getIncheck() == False:
+                if Board.isInboard(row,col - 1) == True and Board.isInboard(row,col - 2) == True and Board.isInboard(row,col - 3) == True and Board.isInboard(row,col - 4) == True:
+                    if Board.isNone(row,col - 1) == True and Board.isNone(row,col - 2) == True and Board.isNone(row,col - 3) == True and Board.isNone(row,col - 4) == False and Board.board[row][col - 4].IsMoved() == False:
+                        if (row,col - 1) not in attacking_list and (row,col - 2) not in attacking_list:
+                            list_of_moves.append((row, col - 2))
+        else:
+            if self.isShortCastle() and self.getIncheck() == False:
+                if Board.isInboard(row,col - 1) == True and Board.isInboard(row,col - 2) == True and Board.isInboard(row,col - 3) == True:
+                    if Board.isNone(row,col - 1) == True and Board.isNone(row,col - 2) == True and Board.isNone(row,col - 3) == False and Board.board[row][col - 3].IsMoved() == False:
+                        if (row,col - 1) not in attacking_list and (row,col - 2) not in attacking_list:
+                            list_of_moves.append((row, col - 2))
 
+            if self.isLongCastle() and self.getIncheck() == False:
+                if Board.isInboard(row,col + 1) == True and Board.isInboard(row,col + 2) == True and Board.isInboard(row,col + 3) == True and Board.isInboard(row,col + 4) == True:
+                    if Board.isNone(row,col + 1) == True and Board.isNone(row,col + 2) == True and Board.isNone(row,col + 3) == True and Board.isNone(row,col + 4) == False and Board.board[row][col + 4].IsMoved() == False:
+                        if (row,col + 1) not in attacking_list and (row,col + 2) not in attacking_list:
+                            list_of_moves.append((row, col + 2))
+		
         return list_of_moves
 
 class Queen:

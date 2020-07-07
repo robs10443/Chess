@@ -30,3 +30,15 @@ python3 Client.py
 Run minimum two Client.py to play the game between the players
 
 Now Enjoy :grinning:
+
+## Screenshots
+
+![Images](https://i.imgur.com/3Ixl2S0.png)
+
+![Images](https://i.imgur.com/q15j3Nu.png)
+
+![Images](https://i.imgur.com/q15j3Nu.png)
+
+![Images](https://i.imgur.com/V56pLZy.png)
+
+![Images](https://i.imgur.com/Uw12y1J.png)
