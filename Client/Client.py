@@ -91,7 +91,9 @@ def displayCurrentStatusBoard(temp_board):
                 image_of_piece = transform.scale(image_of_piece,(gc.BOX_SIDE_LENGTH,gc.BOX_SIDE_LENGTH))
                 starting_x_of_box = (col)*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_SIDE
                 starting_y_of_box = row*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_TOP
-
+                if cur[1] == 'K' and Board.board[row][col].getIncheck() == True:
+                    draw.rect(screen,gc.RED,(starting_x_of_box,starting_y_of_box,gc.BOX_SIDE_LENGTH,gc.BOX_SIDE_LENGTH))
+                
                 screen.blit(image_of_piece,(starting_x_of_box,starting_y_of_box))
             
 
@@ -183,12 +185,7 @@ def displayScreen():
                 row = (mouse_y - gc.SCREEN_MARGIN_TOP) // gc.BOX_SIDE_LENGTH
                 col = (mouse_x - gc.SCREEN_MARGIN_SIDE) // gc.BOX_SIDE_LENGTH
                 if(Board.isInboard(row,col)):
-                    if (gc.YOUR_TURN == False):
-                        if Board.isPiece(row,col):
-                            selected_piece_row = row
-                            selected_piece_col = col
-                            moves = Board.getMoves(row,col)
-                    else:
+                    if (gc.YOUR_TURN == True):
                         if selected == False:
                             if Board.isPiece(row,col):
                                 selected = True

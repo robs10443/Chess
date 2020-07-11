@@ -75,6 +75,6 @@ def createGame(player1,player2):
             player1.send(msg.encode('utf-8'))
             game = False
             break
-
+    print("Game Ended")        
         
 acceptConnections()
