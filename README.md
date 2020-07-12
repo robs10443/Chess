@@ -32,7 +32,7 @@ Run minimum two Client.py to play the game between the players
 Now Enjoy :grinning:
 
 ### Special Thanks
-@Rud09 for helping me in syntax
+@Rud09[https://github.com/Rud09] for helping me in syntax
 
 ### Note
 Currently not working in Windows
