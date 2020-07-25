@@ -144,6 +144,12 @@ def pawnPromotionScreen():
 
         display.flip()
     
+def displaySelectedPiece(row,col):
+    if(Board.getPieceColor(row,col) != gc.GAME_COLOR):
+        return
+    starting_x_of_box = col*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_SIDE
+    starting_y_of_box = row*gc.BOX_SIDE_LENGTH + gc.SCREEN_MARGIN_TOP
+    draw.rect(screen,gc.SELECTED_COLOR,(starting_x_of_box,starting_y_of_box,gc.BOX_SIDE_LENGTH,gc.BOX_SIDE_LENGTH))
 
 def displayScreen():
     running = True
@@ -158,16 +164,8 @@ def displayScreen():
         current_event = event.get()
 
         screen.fill(gc.WHITE)
-        displayChessBoard()
-
-        displayCurrentStatusBoard(temp_board)
         
-        if(gc.YOU_LOSE):
-            youLose()
-
-        if(gc.YOU_WON):
-            youWon()
-
+        
         for e in current_event:
             if e.type == pygame.QUIT:
                 running = False
@@ -232,11 +230,22 @@ def displayScreen():
                                     moves = []
                         
 
+        displayChessBoard()
+        if(selected):
+            displaySelectedPiece(selected_piece_row,selected_piece_col)
+        
+        displayCurrentStatusBoard(temp_board)
+        
+        if(gc.YOU_LOSE):
+            youLose()
+
+        if(gc.YOU_WON):
+            youWon()
+
         displayMoves(moves)
 
         display.flip()
-        pygame.time.wait(1)
-    
+        
 
 def initGame(color):
     gc.GAME_COLOR = color
