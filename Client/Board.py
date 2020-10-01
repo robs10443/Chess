@@ -1,4 +1,4 @@
-
+# this is cliemt board file
 board = [[None for _ in range(8)] for _ in range(8)]
 
 import Pieces
